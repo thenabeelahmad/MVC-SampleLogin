@@ -29,19 +29,29 @@ namespace MVC_LoginDemo.Controllers
             string q = " select upass from tbl_demologin where uname='"+ tf1 +"' ";
             DataTable dt = new DataTable();
             dt = dm.ReadBulkData(q);
-            
-            String pas=dt.Rows[0][0].ToString();
-            if (pas == tf2)
+                
+            if (dt.Rows.Count > 0)
             {
-                Session["user"] = tf1;
-                ViewBag.user = Session["user"];
+                String pas = dt.Rows[0][0].ToString();
             
-                return View("Dashboard");
+                if (pas == tf2)
+                {
+                    Session["user"] = tf1;
+                    ViewBag.user = Session["user"];
+
+                    return View("Dashboard");
+                }
+                else
+                {
+                    ViewBag.confirm = "Wrong Password";
+                }
             }
-            else
-            {
-                ViewBag.confirm = "Fraud User";
+            else {
+
+                ViewBag.confirm = "No User";
+               
             }
+            
             return View();
         }
 
@@ -51,6 +61,7 @@ namespace MVC_LoginDemo.Controllers
             return View();
         }
 
+       
 
     }
 }
